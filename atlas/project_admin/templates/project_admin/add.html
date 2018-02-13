@@ -1,0 +1,8 @@
+<h1>Crear nuevo proyecto</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<fomr action="{% url 'project_admin:add' %}" method="post"
+{% csrf_toke %}
+
+<input type="text"

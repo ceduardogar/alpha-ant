@@ -1,0 +1,79 @@
+{% extends "project_admin/base.html" %}
+{% load staticfiles%}
+
+{% block title %}Add New Project{% endblock title %}
+
+{% block page_content %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                New Project
+                <div class="pull-right">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                            Actions
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right" role="menu">
+                            <li><a href="{% url 'project_admin:get_client' %}">Add a new client</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div> 
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form role="form" action="/projects/add/" method="post">
+                        	{% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-3 form-group">
+                                    {{ form.id.errors }}
+                                    {{ form.id.label_tag }}
+                                    {{ form.id }}
+							    </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 form-group">
+                                    {{ form.name.errors }}
+                                    {{ form.name.label_tag }}
+                                    {{ form.name }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 form-group">
+                                    {{ form.client.errors }}
+                                    {{ form.client.label_tag }}
+                                    {{ form.client }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 form-group">
+                                    {{ form.vendor.errors }}
+                                    {{ form.vendor.label_tag }}
+                                    {{ form.vendor }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 form-group">
+                                    {{ form.administrator.errors }}
+                                    {{ form.administrator.label_tag }}
+                                    {{ form.administrator }}
+                                </div>
+                            </div>
+					        <input type="submit" value="Submit" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock page_content %}
+
+{% block js_script %}
+
+{% endblock js_script %}

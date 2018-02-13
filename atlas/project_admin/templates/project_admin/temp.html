@@ -1,0 +1,101 @@
+{% extends "project_admin/base.html" %}
+{% load staticfiles%}
+
+{% block title %}Dashboard{% endblock title %}
+
+{% block page_content %}
+
+<div class="row">
+    <div class="col-lg-9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Active Projects
+            </div>
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                        <table class="table table-striped table-bordered table-hover" id="project_table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Client</th>
+                                </tr>
+                            </thead>
+                        </table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock page_content %}
+
+{% block js_script %}
+
+<!-- DataTables JavaScript -->
+<script src="{% static 'project_admin/bower_components/datatables/media/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'project_admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js' %}"></script>
+
+<script type="text/javascript" language="javascript" class="init">
+    /* Formatting function for row details - modify as you need */
+    function format ( d ) {
+        // `d` is the original data object for the row
+        return '<table>'+
+            '<tr>'+
+                '<td>Vendor:</td>'+
+                '<td>'+d.fields.vendor+'</td>'+
+           '</tr>'+
+            '<tr>'+
+                '<td>Administrator:</td>'+
+                '<td>'+d.fields.administrator+'</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>Date:</td>'+
+                '<td>'+d.fields.date_created+'</td>'+
+            '</tr>'+
+        '</table>';
+    }
+     
+    $(document).ready(function() {
+        var table = $('#project_table').DataTable( {
+            "ajax": {
+                "url" : "{% url 'project_admin:project_json' %}",
+                "dataSrc" : ''
+            },
+            "columns": [
+                {
+                    "className":      'details-control',
+                    "orderable":      false,
+                    "data":           null,
+                    "defaultContent": ''
+                },
+                { "data": "pk" },
+                { "data": "fields.name" },
+                { "data": "fields.client" }
+            ],
+            "order": [[1, 'asc']]
+        } );
+         
+        // Add event listener for opening and closing details
+        $('#project_table tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row( tr );
+     
+            if ( row.child.isShown() ) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                // Open this row
+                row.child( format(row.data()) ).show();
+                tr.addClass('shown');
+            }
+        } );
+    } );
+
+</script>
+
+{% endblock js_script %}
